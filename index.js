@@ -1,9 +1,17 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const passport = require("passport");
 
 const app = express();
 
 const PORT = process.env.PORT || 3000;
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 
 //import routes
 const userRoutes = require('./routes/api/users');
@@ -21,6 +29,12 @@ mongoose.connect(db)
 app.get('/', (req, res) => {
     res.send("Server Connected");
 })
+
+//passport middleware
+app.use(passport.initialize());
+
+//require passport config
+require('./config/passport')(passport);
 
 //use Routes
 app.use('/api/users', userRoutes);
