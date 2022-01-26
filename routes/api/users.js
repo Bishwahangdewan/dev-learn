@@ -8,7 +8,6 @@ const passport = require("passport");
 
 //import user model
 const User = require('../../models/User');
-const { append } = require('express/lib/response');
 
 //ROUTE - GET /api/users/test
 //desc - test api
