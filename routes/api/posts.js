@@ -126,4 +126,47 @@ router.post("/unlike/:post_id", (req, res) => {
         .catch(err => res.json(err))
 })
 
+//ROUTE - POST /api/posts/comment/:post_id
+//desc - Add comment to Post
+//@access - Private
+router.post('/comment/:post_id', passport.suthenticate("jwt", { session: false }, (req, res) => {
+    Post.findOne({ id: req.params.post_id }).then(post => {
+        if (!post) {
+            return res.status(400).json({ message: "No post exists with such id" })
+        } else {
+            const newComment = {
+                user: req.user.id,
+                text: req.body.text
+            }
+
+            post.comments.unshift(newComment);
+
+            post.save().then(updatedPost => res.json(updatedPost)).catch(err => res.json(err));
+        }
+    })
+        .catch(err => res.json(err))
+}))
+
+
+//ROUTE - DELETE /api/posts/comment/:post_id/:comment_id
+//desc - Delete comment to Post
+//@access - Private
+router.delete('/comment/:post_id/:comment_id', passport.authenticate("jwt", { session: false }), (req, res) => {
+    Post.findOne({ id: req.params.post_id }).then((post) => {
+        if (!post) {
+            return res.status(400).json({ message: "No post with such id found" });
+        } else {
+            const removeIndex = post.comments.map(comment => comment.id).indexOf(req.params.comment_id);
+
+            post.comments.slice(removeIndex, 1);
+
+            post.save().then(updatedPost => {
+                return res.json(updatedPost);
+            })
+                .catch(err => res.json(err))
+        }
+    })
+})
+
+
 module.exports = router;
