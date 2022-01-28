@@ -129,7 +129,7 @@ router.post("/unlike/:post_id", (req, res) => {
 //ROUTE - POST /api/posts/comment/:post_id
 //desc - Add comment to Post
 //@access - Private
-router.post('/comment/:post_id', passport.suthenticate("jwt", { session: false }, (req, res) => {
+router.post('/comment/:post_id', passport.authenticate("jwt", { session: false }, (req, res) => {
     Post.findOne({ id: req.params.post_id }).then(post => {
         if (!post) {
             return res.status(400).json({ message: "No post exists with such id" })

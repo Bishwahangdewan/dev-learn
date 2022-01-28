@@ -7,11 +7,11 @@ const postSchema = new Schema({
         ref: 'user'
     },
     title: {
-        text: String,
+        type: String,
         required: true
     },
     description: {
-        text: String,
+        type: String,
         required: true
     },
     name: {
