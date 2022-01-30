@@ -16,7 +16,7 @@ router.get('/test', (req, res) => res.json({ status: "Success" }))
 
 //ROUTE - POST /api/users/register
 //desc - register user
-//access = Public
+//@access - Public
 router.post('/register', (req, res) => {
 
     User.findOne({
